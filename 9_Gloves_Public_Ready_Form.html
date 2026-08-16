@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>9 Gloves Order Form</title>
+<style>
+body{margin:0;background:#f2f2f2;color:#111;font-family:Arial,sans-serif}
+.wrap{max-width:760px;margin:20px auto;padding:15px}.card{background:#fff;border:3px solid #111;border-radius:16px;padding:24px}
+h1{text-align:center;font-size:40px;margin:0}h3{text-align:center;margin:4px 0 25px}
+h2{border-bottom:2px solid #111;padding-bottom:7px;margin-top:28px}
+label{display:block;font-weight:bold;margin:12px 0 6px}
+input,select,textarea{width:100%;padding:12px;border:2px solid #aaa;border-radius:8px;font-size:16px;box-sizing:border-box}
+textarea{min-height:100px}.services{display:grid;gap:10px}
+button.service{padding:15px;text-align:left;background:white;border:2px solid #111;border-radius:9px;font-weight:bold;font-size:16px}
+button.service.selected{background:#111;color:white}.service span{float:right}
+.total{margin-top:12px;background:#111;color:#fff;padding:14px;border-radius:9px;text-align:center;font-weight:bold}
+.box{border:2px solid #111;padding:14px;border-radius:9px;margin-top:10px}
+.agree{display:flex;gap:10px;align-items:flex-start}.agree input{width:20px;margin-top:3px}
+.action{width:100%;margin-top:18px;padding:15px;border:0;border-radius:9px;background:#111;color:#fff;font-size:17px;font-weight:bold}
+.print{background:#fff;color:#111;border:2px solid #111}
+#message{display:none;margin-top:15px;padding:14px;border:2px solid #111;border-radius:9px;background:#eee}
+small{color:#555}
+</style>
+</head>
+<body>
+<div class="wrap"><div class="card">
+<h1>9 GLOVES</h1><h3>BASEBALL GLOVE REPAIR</h3>
+<p style="text-align:center"><b>KEEP YOUR GLOVE IN THE GAME.</b></p>
+
+<h2>CUSTOMER INFORMATION</h2>
+<label>Customer Name *</label><input id="name">
+<label>Phone Number *</label><input id="phone" type="tel">
+<label>Email Address</label><input id="email" type="email">
+
+<h2>GLOVE INFORMATION</h2>
+<label>Glove Brand</label><input id="brand">
+<label>Glove Model</label><input id="model">
+<label>Glove Position</label>
+<select id="position"><option value="">Select</option><option>Infield</option><option>Outfield</option><option>Pitcher</option><option>Catcher</option><option>First Base</option><option>Other</option></select>
+
+<h2>SELECT A SERVICE *</h2>
+<div class="services">
+<button class="service" type="button" data-service="Glove Cleaning & Conditioning" data-price="30">Glove Cleaning & Conditioning <span>$30</span></button>
+<button class="service" type="button" data-service="Glove Break-In / Softening" data-price="40">Glove Break-In / Softening <span>$40</span></button>
+<button class="service" type="button" data-service="Full Glove Restoration" data-price="85">Full Glove Restoration <span>$85-$105</span></button>
+<button class="service" type="button" data-service="Custom Work" data-price="0">Custom Work <span>Quote</span></button>
+</div>
+<div class="total">Selected: <span id="chosen">None</span><br>Price / Starting Price: <span id="price">$0</span></div>
+<small>Restoration starts at $85. Final restoration price may be $85-$105 after inspection. Custom work requires a quote.</small>
+
+<h2>REPAIR DETAILS</h2>
+<label>What does your glove need?</label><textarea id="details" placeholder="Describe damage, repairs, or special requests."></textarea>
+
+<h2>PAYMENT</h2>
+<label>How would you like to pay? *</label>
+<select id="payment"><option value="">Select</option><option>Cash</option><option>Online Payment</option><option>Other - Arrange with 9 Gloves</option></select>
+<div class="box"><b>CASH PAYMENT:</b><br>If paying with cash, please send the cash with the glove when submitting it for repair.</div>
+
+<h2>MAILING & SHIPPING AGREEMENT *</h2>
+<div class="box">
+If the glove is shipped by mail or another carrier, I understand that 9 Gloves is not responsible for loss, theft, delay, or damage caused by the carrier during shipping.
+<label class="agree"><input id="agree" type="checkbox"><span>I have read and agree to the mailing and shipping statement above.</span></label>
+</div>
+
+<h2>CUSTOMER SIGNATURE *</h2>
+<label>Type your full name as your signature</label><input id="signature">
+<small>By signing, I confirm that the information I provided is accurate and that I agree to the mailing and shipping statement above.</small>
+
+<h2>SEND YOUR GLOVE TO</h2>
+<div class="box"><b style="font-size:20px">9 GLOVES</b><br><br><b>2731 NW FL AVE<br>STUART, FL 34994</b></div>
+<small>This is an address label only, not prepaid USPS postage.</small>
+
+<button class="action print" type="button" onclick="window.print()">Print Packing Label</button>
+<button class="action" type="button" onclick="submitOrder()">Submit Order Request</button>
+<div id="message"></div>
+<p style="text-align:center;margin-top:25px"><b>9 GLOVES</b><br>Baseball Glove Repair<br>Quality Work • Fair Prices • Game Ready</p>
+</div></div>
+
+<script>
+let chosen=null;
+document.querySelectorAll(".service").forEach(b=>b.onclick=()=>{
+ document.querySelectorAll(".service").forEach(x=>x.classList.remove("selected"));
+ b.classList.add("selected");
+ chosen={name:b.dataset.service,price:b.dataset.price};
+ document.getElementById("chosen").textContent=chosen.name;
+ document.getElementById("price").textContent=chosen.price==="0"?"Quote Required":"$"+chosen.price;
+});
+function submitOrder(){
+ const name=document.getElementById("name").value.trim(), phone=document.getElementById("phone").value.trim();
+ const pay=document.getElementById("payment").value, sig=document.getElementById("signature").value.trim();
+ if(!name||!phone||!chosen||!pay||!sig||!document.getElementById("agree").checked){
+  alert("Please complete your name, phone number, service, payment method, shipping agreement, and signature.");
+  return;
+ }
+ const text=`9 GLOVES NEW ORDER
+
+Customer: ${name}
+Phone: ${phone}
+Email: ${document.getElementById("email").value}
+Brand: ${document.getElementById("brand").value}
+Model: ${document.getElementById("model").value}
+Position: ${document.getElementById("position").value}
+Service: ${chosen.name}
+Price/Starting Price: ${chosen.price==="0"?"Quote Required":"$"+chosen.price}
+Payment: ${pay}
+Repair Details: ${document.getElementById("details").value}
+
+Shipping Agreement: ACCEPTED
+Signature: ${sig}
+
+SEND GLOVE TO:
+9 GLOVES
+2731 NW FL AVE
+STUART, FL 34994`;
+ document.getElementById("message").style.display="block";
+ document.getElementById("message").innerHTML="<b>Order prepared.</b><br>Your phone's text-message app should open with the order addressed to 772-529-8319. Tap Send to finish.";
+ window.location.href="sms:+17725298319?body="+encodeURIComponent(text);
+}
+</script>
+</body>
+</html>
